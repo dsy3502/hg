@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package istio.networking.v1alpha3;
+
+import "networking/v1alpha3/gateway.proto";
+
+option go_package = "istio.io/api/networking/v1alpha3";
+
+// <!-- crd generation tags
+// +cue-gen:ServiceSubscriptionList:groupName:networking.istio.io
+// +cue-gen:ServiceSubscriptionList:version:v1alpha3
+// +cue-gen:ServiceSubscriptionList:storageVersion
+// +cue-gen:ServiceSubscriptionList:annotations:helm.sh/resource-policy=keep
+// +cue-gen:ServiceSubscriptionList:labels:app=istio-pilot,chart=istio,heritage=Tiller,release=istio
+// +cue-gen:ServiceSubscriptionList:subresource:status
+// +cue-gen:ServiceSubscriptionList:scope:Namespaced
+// +cue-gen:ServiceSubscriptionList:resource:categories=istio-io,networking-istio-io
+// +cue-gen:ServiceSubscriptionList:preserveUnknownFields:false
+// -->
+//
+// <!-- go code generation tags
+// +kubetype-gen
+// +kubetype-gen:groupVersion=networking.istio.io/v1alpha3
+// +genclient
+// +k8s:deepcopy-gen=true
+// -->
+message ServiceSubscriptionList {
+  enum Resolution {
+    CONFIGSERVER = 0;
+    VIPSERVER = 1;
+    NACOS = 2;
+  };
+
+  Resolution resolution = 1;
+  repeated ServiceSubscription subscriptions = 2;
+}
+
+message ServiceSubscription {
+  string hostname = 1;
+  string version = 2;
+  string group = 3;
+  Port port = 4;
+  repeated string units = 5;
+  map<string, string> labels = 6;
+}

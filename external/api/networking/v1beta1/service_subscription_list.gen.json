@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": "v1beta1"
+  },
+  "components": {
+    "schemas": {
+      "istio.networking.v1beta1.Port": {
+        "description": "Port describes the properties of a specific port of a service.",
+        "type": "object",
+        "properties": {
+          "number": {
+            "description": "A valid non-negative integer port number.",
+            "type": "integer"
+          },
+          "protocol": {
+            "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Label assigned to the port.",
+            "type": "string"
+          },
+          "targetPort": {
+            "description": "The port number on the endpoint where the traffic will be received. Applicable only when used with ServiceEntries.",
+            "type": "integer"
+          }
+        }
+      },
+      "istio.networking.v1beta1.ServiceSubscription": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "port": {
+            "$ref": "#/components/schemas/istio.networking.v1beta1.Port"
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labels": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "istio.networking.v1beta1.ServiceSubscriptionList": {
+        "description": "\u003c!-- crd generation tags +cue-gen:ServiceSubscriptionList:groupName:networking.istio.io +cue-gen:ServiceSubscriptionList:version:v1beta1 +cue-gen:ServiceSubscriptionList:annotations:helm.sh/resource-policy=keep +cue-gen:ServiceSubscriptionList:labels:app=istio-pilot,chart=istio,heritage=Tiller,release=istio +cue-gen:ServiceSubscriptionList:subresource:status +cue-gen:ServiceSubscriptionList:scope:Namespaced +cue-gen:ServiceSubscriptionList:resource:categories=istio-io,networking-istio-io +cue-gen:ServiceSubscriptionList:preserveUnknownFields:false --\u003e",
+        "type": "object",
+        "properties": {
+          "resolution": {
+            "$ref": "#/components/schemas/istio.networking.v1beta1.ServiceSubscriptionList.Resolution"
+          },
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/istio.networking.v1beta1.ServiceSubscription"
+            }
+          }
+        }
+      },
+      "istio.networking.v1beta1.ServiceSubscriptionList.Resolution": {
+        "type": "string",
+        "enum": [
+          "CONFIGSERVER",
+          "VIPSERVER",
+          "NACOS"
+        ]
+      }
+    }
+  }
+}

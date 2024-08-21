@@ -16,6 +16,7 @@ package bootstrap
 
 import (
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"time"
@@ -235,7 +236,7 @@ func (s *Server) initConfigController() error {
 		options.ClusterId = ""
 	}
 
-	ingressConfig := translation.NewIngressTranslation(s.kubeClient, s.xdsServer, ns, options.ClusterId)
+	ingressConfig := translation.NewIngressTranslation(s.kubeClient, s.xdsServer, ns, options.ClusterId, s.IngressClass)
 	ingressController, kingressController := ingressConfig.AddLocalCluster(options)
 
 	s.configStores = append(s.configStores, ingressConfig)
@@ -434,6 +435,7 @@ func (s *Server) initHttpServer() error {
 	s.xdsServer.AddDebugHandlers(s.httpMux, nil, true, nil)
 	s.httpMux.HandleFunc("/ready", s.readyHandler)
 	s.httpMux.HandleFunc("/registry/watcherStatus", s.registryWatcherStatusHandler)
+	s.httpMux.HandleFunc("/registryz", s.getRegistryz)
 	return nil
 }
 
@@ -447,6 +449,34 @@ func (s *Server) readyHandler(w http.ResponseWriter, _ *http.Request) {
 		}
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func (s *Server) getRegistryz(w http.ResponseWriter, _ *http.Request) {
+	client := &http.Client{}
+	log.Warnf("get getRegistryz 111")
+	req, err := http.NewRequest("GET", "http://localhost:15014/debug/registryz", nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	// 发送请求
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// 读取响应
+	registryz, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading registryz response:", err)
+		return
+	}
+	w.Write(registryz)
+	w.WriteHeader(http.StatusOK)
+
 }
 
 func (s *Server) registryWatcherStatusHandler(w http.ResponseWriter, _ *http.Request) {

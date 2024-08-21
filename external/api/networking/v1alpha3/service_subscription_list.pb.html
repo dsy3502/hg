@@ -1,0 +1,137 @@
+---
+title: istio.networking.v1alpha3
+layout: protoc-gen-docs
+generator: protoc-gen-docs
+number_of_entries: 3
+---
+<h2 id="ServiceSubscriptionList">ServiceSubscriptionList</h2>
+<section>
+
+<table class="message-fields">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr id="ServiceSubscriptionList-resolution">
+<td><code>resolution</code></td>
+<td><code><a href="https://istio.io/docs/reference/config/networking/virtual-service.html#ServiceSubscriptionList-Resolution">Resolution</a></code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscriptionList-subscriptions">
+<td><code>subscriptions</code></td>
+<td><code><a href="https://istio.io/docs/reference/config/networking/virtual-service.html#ServiceSubscription">ServiceSubscription[]</a></code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<h2 id="ServiceSubscription">ServiceSubscription</h2>
+<section>
+<table class="message-fields">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr id="ServiceSubscription-hostname">
+<td><code>hostname</code></td>
+<td><code>string</code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscription-version">
+<td><code>version</code></td>
+<td><code>string</code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscription-group">
+<td><code>group</code></td>
+<td><code>string</code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscription-port">
+<td><code>port</code></td>
+<td><code><a href="https://istio.io/docs/reference/config/networking/gateway.html#Port">Port</a></code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscription-units">
+<td><code>units</code></td>
+<td><code>string[]</code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="ServiceSubscription-labels">
+<td><code>labels</code></td>
+<td><code>map&lt;string,&nbsp;string&gt;</code></td>
+<td>
+</td>
+<td>
+No
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<h2 id="ServiceSubscriptionList-Resolution">ServiceSubscriptionList.Resolution</h2>
+<section>
+<table class="enum-values">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr id="ServiceSubscriptionList-Resolution-CONFIGSERVER">
+<td><code>CONFIGSERVER</code></td>
+<td>
+</td>
+</tr>
+<tr id="ServiceSubscriptionList-Resolution-VIPSERVER">
+<td><code>VIPSERVER</code></td>
+<td>
+</td>
+</tr>
+<tr id="ServiceSubscriptionList-Resolution-NACOS">
+<td><code>NACOS</code></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
