@@ -436,6 +436,7 @@ func (s *Server) initHttpServer() error {
 	s.httpMux.HandleFunc("/ready", s.readyHandler)
 	s.httpMux.HandleFunc("/registry/watcherStatus", s.registryWatcherStatusHandler)
 	s.httpMux.HandleFunc("/registryz", s.getRegistryz)
+	s.httpMux.HandleFunc("/endpointz", s.getEndpointz)
 	return nil
 }
 
@@ -450,7 +451,31 @@ func (s *Server) readyHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 }
+func (s *Server) getEndpointz(w http.ResponseWriter, _ *http.Request) {
+	client := &http.Client{}
+	log.Warnf("get getRegistryz 111")
 
+	reqEndpoint, err := http.NewRequest("GET", "http://localhost:15014/debug/endpointz", nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+	// 发送请求
+	respendpoint, err := client.Do(reqEndpoint)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer respendpoint.Body.Close()
+	// 读取响应
+	endpoints, err := io.ReadAll(respendpoint.Body)
+	if err != nil {
+		fmt.Println("Error reading endpoints response:", err)
+		return
+	}
+	w.Write(endpoints)
+	w.WriteHeader(http.StatusOK)
+}
 func (s *Server) getRegistryz(w http.ResponseWriter, _ *http.Request) {
 	client := &http.Client{}
 	log.Warnf("get getRegistryz 111")
@@ -474,6 +499,7 @@ func (s *Server) getRegistryz(w http.ResponseWriter, _ *http.Request) {
 		fmt.Println("Error reading registryz response:", err)
 		return
 	}
+
 	w.Write(registryz)
 	w.WriteHeader(http.StatusOK)
 
@@ -561,4 +587,9 @@ func buildLedger(ca RegistryOptions) ledger.Ledger {
 		result = &model.DisabledLedger{}
 	}
 	return result
+}
+
+type endpointzResponse struct {
+	Service   string                   `json:"svc"`
+	Endpoints []*model.ServiceInstance `json:"ep"`
 }
